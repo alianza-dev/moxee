@@ -1,3 +1,9 @@
+# 1.0.3
+
+## Other changes
+
+ - Fixing docs issue
+
 # 1.0.2
 
 ## Bug Fixes

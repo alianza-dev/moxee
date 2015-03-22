@@ -39,9 +39,7 @@ you open the `index.html` in a browser, you'll notice the application works just
 if you run the tests, you'll notice that Moxee has created tests that fail because modules are using other module's
 stuff even though they don't explicitly depend on them.
 
-## Documentation
-
-This is the best I got right now... The project is still really young...
+## Usage
 
 ```javascript
 // Your karma.conf.js
@@ -57,7 +55,7 @@ module.exports = function(config) {
       'node_modules/moxee/dist/moxee.js',
 
       'js/*.js', // <-- your own source files
-      'test/*.js' <-- an example of the contents of your main moxee setup test file is below
+      'test/*.js' // <-- an example of the contents of your main moxee setup test file is below
     ],
     reporters: ['progress'],
     port: 9876,
@@ -88,7 +86,10 @@ moxee.harness.stateControllers(allStates);
 // this is how you setup testing the invokeQueue and directive's controllers
 var myModulePrefix = 'moxeeExample';
 moxee.harness.invokeQueue(mainModuleName, function shouldHarnessModule(ngModuleName) {
-  return ngModuleName.indexOf(myModulePrefix) === 0; // return whether or not you wish to test this module
+  // return whether or not you wish to test this module
+  // this will be passed all the modules that your application uses
+  // including third parties. You may not care to test those...
+  return ngModuleName.indexOf(myModulePrefix) === 0;
 });
 ```
 
