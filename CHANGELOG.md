@@ -1,3 +1,9 @@
+# 1.0.6
+
+## Other changes
+
+- Updating docs a bit
+
 # 1.0.5
 
 ## Features
