@@ -1,14 +1,13 @@
 {
   "name": "moxee",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Enforcing modularity on angular applications",
   "main": "src/index.js",
   "peerDependencies": {
     "angular": "^1.2.x",
-    "angular-mocks": "^1.3.10",
+    "angular-mocks": "^1.2.x",
     "karma-chai": "^0.1.0",
-    "karma-mocha": "^0.1.9",
-    "lodash": ">=3.0.0 <4.0.0"
+    "karma-mocha": "^0.1.9"
   },
   "devDependencies": {
     "babel-core": "^4.7.16",
@@ -22,6 +21,7 @@
     "karma-chrome-launcher": "^0.1.5",
     "karma-firefox-launcher": "^0.1.4",
     "karma-webpack": "^1.5.0",
+    "lodash": "^3.5.0",
     "mocha": "^2.1.0",
     "ng-annotate": "^0.15.2",
     "ng-annotate-loader": "0.0.2",

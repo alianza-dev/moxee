@@ -1,11 +1,11 @@
 // automatically create tests for all controllers
 const expectControllerToNotMissDependencies = require('./expectControllerToNotMissDependencies');
-const _ = require('lodash');
+const angular = require('./angular-fix');
 
 module.exports = harnessStateControllers;
 
 function harnessStateControllers(allStates) {
-  _.each(allStates, function(state) {
+  angular.forEach(allStates, function(state) {
     if (!state.controller) {
       return;
     }
@@ -17,7 +17,7 @@ function harnessStateControllers(allStates) {
     let parent = state;
     const resolves = {};
     while(parent) {
-      _.each(parent.resolve, mockResolve);
+      angular.forEach(parent.resolve, mockResolve);
       parent = parent.data && parent.data.parent;
     }
     return resolves;
@@ -32,7 +32,7 @@ function harnessStateControllers(allStates) {
       beforeEach(window.module(ngModuleName));
 
       it('should not use anything it does not explicitly depend on', inject(function($injector) {
-        expectControllerToNotMissDependencies(controller, $injector, _.assign({$scope: {}}, resolves));
+        expectControllerToNotMissDependencies(controller, $injector, angular.extend({$scope: {}}, resolves));
       }));
     });
   }

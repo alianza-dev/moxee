@@ -3,7 +3,6 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['mocha', 'chai'], // <-- currently, these are both required... PR welcome to make it work without that!
     files: [
-      'node_modules/lodash/index.js', // <-- currently required
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/angular-ui-router/release/angular-ui-router.js',

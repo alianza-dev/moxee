@@ -1,13 +1,13 @@
-const _ = require('lodash');
+const angular = require('./angular-fix');
 
 module.exports = expectControllerToNotMissDependencies;
 
 function expectControllerToNotMissDependencies(controller, $injector, locals) {
-  controller = _.isString(controller) ? $injector.get(controller) : controller;
+  controller = angular.isString(controller) ? $injector.get(controller) : controller;
   const controllerDeps = getDependencies(controller);
   const isMissing = true;
-  const missingDependencies = _.filter(controllerDeps, function(dep) {
-    if (!_.isUndefined(locals[dep])) {
+  const missingDependencies = controllerDeps.filter(function(dep) {
+    if (angular.isDefined(locals[dep])) {
       return !isMissing;
     }
     try {
@@ -27,7 +27,7 @@ function expectControllerToNotMissDependencies(controller, $injector, locals) {
   function getDependencies(func) {
     if (func.$inject) {
       return func.$inject;
-    } else if (_.isArray(func)) {
+    } else if (angular.isArray(func)) {
       return func.slice(0, func.length - 1);
     }
     const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;

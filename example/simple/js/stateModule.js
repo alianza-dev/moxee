@@ -14,7 +14,7 @@ angular.module('moxeeExampleStateModule', ['ui.router', 'moxeeExampleChildModule
       }
     },
     data: {
-      module: 'stateModule'
+      module: 'moxeeExampleStateModule'
     }
   });
 
@@ -33,7 +33,7 @@ angular.module('moxeeExampleStateModule', ['ui.router', 'moxeeExampleChildModule
       }
     },
     data: {
-      module: 'stateModule',
+      module: 'moxeeExampleStateModule',
       parent: 'home'
     }
   });

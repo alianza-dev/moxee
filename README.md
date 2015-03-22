@@ -28,6 +28,10 @@ Moxee's goal is to enforce modularity in Angular applications so we can develop 
 confidence that they wont be maintenance nightmares in the future. Moxee is part of a larger initiative which is still
 a WIP. Look forward to what's coming :-)
 
+## Other TODOs
+
+ - Currently, we only support `mocha` and `chai`. Would like to support any testing framework.
+
 ## Examples
 
 There's a very simple example application in the [`example`](example) directory which will hopefully be instructive. If

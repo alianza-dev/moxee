@@ -1,5 +1,4 @@
 const expectControllerToNotMissDependencies = require('./expectControllerToNotMissDependencies');
-const _ = require('lodash');
 const angular = require('./angular-fix');
 const testableComponentTypes = ['directive', 'factory', 'provider', 'register'];
 const harnessedModules = {};
@@ -19,22 +18,21 @@ function harnessModuleInvokeQueue(ngModule, shouldHarness) {
     return;
   }
   harnessedModules[ngModule.name] = true;
-  _.each(getComponents(ngModule), component => attachTestHarnesses(component, ngModule));
-  _.each(getModuleDependencies(ngModule, shouldHarness), depModule => {
+  angular.forEach(getComponents(ngModule), component => attachTestHarnesses(component, ngModule));
+  angular.forEach(getModuleDependencies(ngModule, shouldHarness), depModule => {
     harnessModuleInvokeQueue(depModule, shouldHarness);
   });
 }
 
 function getComponents(ngModule) {
-  return _.chain(ngModule._invokeQueue)
-    .filter(component => _.contains(testableComponentTypes, component[1]))
+  return ngModule._invokeQueue
+    .filter(component => testableComponentTypes.indexOf(component[1]) !== -1)
     .map(component => {
       const type = component[1];
       const name = component[2][0];
       const definition = component[2][1];
       return {name, definition, type};
-    })
-    .value();
+    });
 }
 
 function attachTestHarnesses(component, ngModule) {
@@ -46,10 +44,9 @@ function attachTestHarnesses(component, ngModule) {
 }
 
 function getModuleDependencies(ngModule, shouldHarnessFn) {
-  return _.chain(ngModule.requires)
+  return ngModule.requires
     .filter(shouldHarnessFn)
-    .map((name) => angular.module(name))
-    .value();
+    .map((name) => angular.module(name));
 }
 
 function createGenericTestHarness(component, ngModuleName) {
