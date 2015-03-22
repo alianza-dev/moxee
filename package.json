@@ -36,7 +36,8 @@
     "test": "node node_modules/karma/bin/karma start karma.conf.js",
     "test:ci": "node node_modules/karma/bin/karma start karma.conf.ci.js",
     "dev": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base app/ --port 8080 --colors",
-    "flush": "rm -rf node_modules && npm cache clean && npm i"
+    "flush": "rm -rf node_modules && npm cache clean && npm i",
+    "release": "git push && npm publish && git push --tags"
   },
   "repository": {
     "type": "git",
