@@ -1,5 +1,7 @@
 # Moxee
 
+[![Join the chat at https://gitter.im/kentcdodds/moxee](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kentcdodds/moxee?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Enforcing modularity in AngularJS applications.
 
 Here's [the problem](http://jsbin.com/kolaci/edit?html,js,output). Angular's module system is this big global context.
