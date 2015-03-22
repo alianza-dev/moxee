@@ -10,7 +10,7 @@ function harnessStateControllers(allStates) {
       return;
     }
     const resolves = mockResolves(state);
-    createControllerTest(state.controller, state.data.module, resolves);
+    createControllerTest(state.controller, state.data.ngModule, resolves);
   });
 
   function mockResolves(state) {

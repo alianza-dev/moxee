@@ -93,4 +93,26 @@ moxee.harness.invokeQueue(mainModuleName, function shouldHarnessModule(ngModuleN
 });
 ```
 
+## State Controllers
+
+Right now, if you're going to use the `stateControllers` harnesser, you'll have to add two things for each of your
+states `data` property:
+
+```javascript
+$stateProvider.state({
+  // ... other state related stuff
+  data: {
+    ngModule: 'moxeeExampleStateModule', // <-- the name (or actual object) of the module this state is being registered under
+    parent: 'home' // <-- the name of the parent state (if there is one)
+  }
+});
+```
+
+The reason for this is because for `moxee` to know what a `controller` should have access to, it needs to know what
+module to initialize for the tests (for the injector) and it also needs to know the parent's `resolve` properties so it
+can mock those.
+
+I think it should be possible to find the parent state of a given state, so hopefully I can get that working (or a PR
+would be nice), but I don't think there's a way to get around the `data.ngModule` requirement. I recommend an
+abstraction that would do this for you. I've got one right now in my own project, and I'm working on open sourcing it :)
 
