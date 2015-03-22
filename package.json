@@ -1,8 +1,8 @@
 {
   "name": "moxee",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Enforcing modularity on angular applications",
-  "main": "src/index.js",
+  "main": "dist/moxee.js",
   "peerDependencies": {
     "angular": "^1.2.x",
     "angular-mocks": "^1.2.x",

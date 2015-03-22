@@ -44,6 +44,38 @@ stuff even though they don't explicitly depend on them.
 This is the best I got right now... The project is still really young...
 
 ```javascript
+// Your karma.conf.js
+
+module.exports = function(config) {
+  config.set({
+    basePath: '',
+    frameworks: ['mocha', 'chai'], // <-- currently, these are both required... PR welcome to make it work without that!
+    files: [
+      'node_modules/angular/angular.js',
+      'node_modules/angular-mocks/angular-mocks.js',
+      'node_modules/angular-ui-router/release/angular-ui-router.js',
+      'node_modules/moxee/dist/moxee.js',
+
+      'js/*.js', // <-- your own source files
+      'test/*.js' <-- an example of the contents of your main moxee setup test file is below
+    ],
+    reporters: ['progress'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: ['PhantomJS'],
+    singleRun: false,
+    plugins: [
+      'karma-mocha', // <-- required currently. PRs welcome!
+      'karma-chai', // <-- required currently. PRs welcome!
+      'karma-phantomjs-launcher'
+    ]
+  });
+};
+```
+
+```javascript
 // Your main test.js file
 
 // this is how you setup testing states
@@ -59,3 +91,5 @@ moxee.harness.invokeQueue(mainModuleName, function shouldHarnessModule(ngModuleN
   return ngModuleName.indexOf(myModulePrefix) === 0; // return whether or not you wish to test this module
 });
 ```
+
+
