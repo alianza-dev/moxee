@@ -1,3 +1,9 @@
+# 1.0.5
+
+## Features
+
+- Allowing you to pass the actual module object for the `ngModule` of a `state` for the `stateControllers`.
+
 # 1.0.4
 
 ## Bug Fixes

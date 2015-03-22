@@ -28,6 +28,9 @@ function harnessStateControllers(allStates) {
   }
 
   function createControllerTest(controller, ngModuleName, resolves) {
+    if (typeof ngModuleName !== 'string') {
+      ngModuleName = ngModuleName.name;
+    }
     describe('controller ' + controller.name, function() {
       beforeEach(window.module(ngModuleName));
 
