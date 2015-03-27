@@ -5,7 +5,7 @@ angular.module('moxeeExampleStateModule', ['ui.router', 'moxeeExampleChildModule
     url: '/',
     template: '<div ui-view></div>',
     controllerAs: 'vm',
-    controller: function(alertFromA, alertFromB) {
+    controller: function HomeCtrl(alertFromA, alertFromB) {
       // this will fail because it doesn't depend on the "childModuleB"
     },
     resolve: {
@@ -23,7 +23,7 @@ angular.module('moxeeExampleStateModule', ['ui.router', 'moxeeExampleChildModule
     url: 'child',
     template: '<div>Hello world!</div>',
     controllerAs: 'vm',
-    controller: function(parentDependency, childDependency) {
+    controller: function ChildCtrl(parentDependency, childDependency) {
       // this will pass because parentDependency comes from the parent's resolve
       // and the childDependency comes from this state's resolve.
     },

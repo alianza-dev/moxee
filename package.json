@@ -31,6 +31,7 @@
   "scripts": {
     "start": "npm run dev",
     "build:dist": "node node_modules/webpack/bin/webpack.js",
+    "build:dist:watch": "node node_modules/webpack/bin/webpack.js --watch",
     "build:prod": "node node_modules/webpack/bin/webpack.js --config webpack.config.minify.js",
     "build": "npm run build:dist; npm run build:prod",
     "test": "node node_modules/karma/bin/karma start karma.conf.js",

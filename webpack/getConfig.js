@@ -82,7 +82,7 @@ module.exports = function getConfig(context) {
       failOnError: !dev,
       failOnWarning: !dev
     }
-  }
+  };
 };
 
 function getBanner() {

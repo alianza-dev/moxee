@@ -1,79 +1,75 @@
 const expectControllerToNotMissDependencies = require('./expectControllerToNotMissDependencies');
 const angular = require('./angular-fix');
+const {getInjector} = require('./utils');
 const testableComponentTypes = ['directive', 'factory', 'provider', 'register'];
-const harnessedModules = {};
-const testedThingsByName = {};
 
-module.exports = harnessModuleInvokeQueue;
+// check for modularity in the invokeQueue and ddo controllers
+module.exports = (mainNgModule, shouldHarness, strictDi) => {
+  const harnessedModules = {};
+  const testedThingsByName = {};
+  ensureInvokeQueueIsModular(mainNgModule, shouldHarness, harnessedModules, testedThingsByName, strictDi);
 
-// automatically create tests for all registered components
+  // auto-harness components that don't have tests setup
+  // this helps to enforce modularity
+  function ensureInvokeQueueIsModular(ngModule) {
+    if (typeof ngModule === 'string') {
+      ngModule = angular.module(ngModule);
+    }
+    if (harnessedModules[ngModule.name]) {
+      return;
+    }
+    harnessedModules[ngModule.name] = true;
+    angular.forEach(getComponents(ngModule), component => assertComponentIsModular(component, ngModule));
+    angular.forEach(getModuleDependencies(ngModule, shouldHarness), ensureInvokeQueueIsModular);
 
-// auto-harness components that don't have tests setup
-// this helps to enforce modularity
-function harnessModuleInvokeQueue(ngModule, shouldHarness) {
-  if (typeof ngModule === 'string') {
-    ngModule = angular.module(ngModule);
+    function assertComponentIsModular(component) {
+      const id = `${ngModule.name}${component.name}`;
+      if (testedThingsByName[id] && component.definition === testedThingsByName[id].definition) {
+        return;
+      }
+      testedThingsByName[id] = {component, ngModule};
+
+      const $injector = getInjector(ngModule, strictDi);
+
+      if (component.type === 'controller') {
+        expectControllerToNotMissDependencies(component.definition, $injector, {}, strictDi);
+        return;
+      }
+
+      // this will throw an error if it's not modular (or if strictDi=true and it's not using strictDi)
+      $injector.get(component.name);
+      if (component.type === 'directive') {
+        const ddo = $injector.invoke(component.definition);
+        if (ddo.controller && typeof ddo.controller !== 'string') {
+          expectControllerToNotMissDependencies(ddo.controller, $injector, {}, strictDi);
+        } else {
+          /* eslint no-empty:0 */
+          // in the case that the controller is a string, it will be its own component
+        }
+      }
+    }
   }
-  if (harnessedModules[ngModule.name]) {
-    return;
-  }
-  harnessedModules[ngModule.name] = true;
-  angular.forEach(getComponents(ngModule), component => attachTestHarnesses(component, ngModule));
-  angular.forEach(getModuleDependencies(ngModule, shouldHarness), depModule => {
-    harnessModuleInvokeQueue(depModule, shouldHarness);
-  });
-}
+};
+
+
 
 function getComponents(ngModule) {
   return ngModule._invokeQueue
     .filter(component => testableComponentTypes.indexOf(component[1]) !== -1)
     .map(component => {
-      const type = component[1];
+      const isController = component[0] === '$controllerProvider';
+      const type = isController ? 'controller' : component[1];
       const name = component[2][0];
       const definition = component[2][1];
       return {name, definition, type};
     });
 }
 
-function attachTestHarnesses(component, ngModule) {
-  if (testedThingsByName['component' + component.name]) {
-    return;
-  }
-  testedThingsByName['component' + component.name] = {component, ngModule};
-  createGenericTestHarness(component, ngModule.name);
-}
-
-function getModuleDependencies(ngModule, shouldHarnessFn) {
+function getModuleDependencies(ngModule, shouldHarnessFn = () => true) {
   return ngModule.requires
     .filter(shouldHarnessFn)
     .map((name) => angular.module(name));
 }
 
-function createGenericTestHarness(component, ngModuleName) {
-  describe(component.type + ' ' + component.name, function() {
-    beforeEach(window.module(ngModuleName));
-
-
-    it('should not use anything it does not explicitly depend on', function() {
-      // angular will cause the failure we're looking for.
-      // So this always passing assertion wont even run if
-      // It's depending on something it shouldn't.
-      expect(true).to.be.true;
-    });
-
-    if (component.type === 'directive') {
-      it('should not have a controller that uses anything it should not', inject(function($injector) {
-        const ddo = $injector.invoke(component.definition);
-        if (ddo.controller) {
-          expectControllerToNotMissDependencies(ddo.controller, $injector, {
-            $scope: {},
-            $element: {},
-            $attrs: {}
-          });
-        }
-      }));
-    }
-  });
-}
 
 

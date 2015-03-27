@@ -2,9 +2,9 @@
 const expectControllerToNotMissDependencies = require('./expectControllerToNotMissDependencies');
 const angular = require('./angular-fix');
 
-module.exports = harnessStateControllers;
+module.exports = assertStateControllersAreModular;
 
-function harnessStateControllers(allStates) {
+function assertStateControllersAreModular(allStates) {
   angular.forEach(allStates, function(state) {
     if (!state.controller) {
       return;
@@ -18,7 +18,7 @@ function harnessStateControllers(allStates) {
     const resolves = {};
     while(parent) {
       angular.forEach(parent.resolve, mockResolve);
-      parent = parent.data && parent.data.parent;
+      parent = getParent(parent, allStates);
     }
     return resolves;
 
@@ -27,16 +27,23 @@ function harnessStateControllers(allStates) {
     }
   }
 
-  function createControllerTest(controller, ngModuleName, resolves) {
+  function createControllerTest(controller, ngModuleName, resolves, strictDi) {
     if (typeof ngModuleName !== 'string') {
       ngModuleName = ngModuleName.name;
     }
-    describe('controller ' + controller.name, function() {
-      beforeEach(window.module(ngModuleName));
+    const $injector = angular.injector(['ng', ngModuleName], strictDi);
 
-      it('should not use anything it does not explicitly depend on', inject(function($injector) {
-        expectControllerToNotMissDependencies(controller, $injector, angular.extend({$scope: {}}, resolves));
-      }));
-    });
+    // this will throw an error if it's not modular (or if strictDi=true and it's not using strictDi)
+    $injector.get(controller.name);
+    expectControllerToNotMissDependencies(controller, $injector, resolves);
   }
+
+}
+
+function getParent(child, allStates) {
+  let parent = child.data && child.data.parent;
+  if (typeof parent === 'string') {
+    parent = allStates.filter((state) => state.name === parent)[0];
+  }
+  return parent;
 }
