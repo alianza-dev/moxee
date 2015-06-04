@@ -1,6 +1,6 @@
 {
   "name": "moxee",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Enforcing modularity on angular applications",
   "main": "dist/moxee.js",
   "peerDependencies": {
