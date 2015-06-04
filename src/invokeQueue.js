@@ -68,7 +68,8 @@ function createGenericTestHarness(component, ngModuleName) {
           expectControllerToNotMissDependencies(ddo.controller, $injector, {
             $scope: {},
             $element: {},
-            $attrs: {}
+            $attrs: {},
+            $transclude: angular.noop
           });
         }
       }));

@@ -1,4 +1,6 @@
 const angular = require('./angular-fix');
+const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+const ARGUMENT_NAMES = /([^\s,]+)/g;
 
 module.exports = expectControllerToNotMissDependencies;
 
@@ -30,8 +32,6 @@ function expectControllerToNotMissDependencies(controller, $injector, locals) {
     } else if (angular.isArray(func)) {
       return func.slice(0, func.length - 1);
     }
-    const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
-    const ARGUMENT_NAMES = /([^\s,]+)/g;
     const fnStr = func.toString().replace(STRIP_COMMENTS, '');
     let result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
     if(result === null) {

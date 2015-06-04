@@ -1,3 +1,9 @@
+# 1.0.7
+
+## Bug Fixes
+
+- Adding `$transclude` as a default injectable for directive controllers.
+
 # 1.0.6
 
 ## Other changes
