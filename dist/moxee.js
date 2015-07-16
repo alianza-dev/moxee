@@ -1,4 +1,4 @@
-// moxee version 1.0.7 built with ♥ by Kent C. Dodds on Thu Jun 04 2015 09:53:45 GMT-0600 (MDT) (ó ì_í)=óò=(ì_í ò)
+// moxee version 1.0.8 built with ♥ by Kent C. Dodds on Thu Jul 16 2015 13:15:30 GMT-0600 (MDT) (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
